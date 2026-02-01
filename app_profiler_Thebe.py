@@ -24,7 +24,7 @@ st.header("Professional Summary")
 st.write("Highly motivated professional with a robust academic background, holding a B.Sc. in Biology and Chemistry, a B.Sc. Honours in Microbiology, and training in Project Management and Quality Assurance. My diverse expertise spans biology, analytical and organic chemistry, microbiology, biotechnology, and quality management. With hands-on experience as an intern research microbiologist at the National Research Foundation (NRF), roles in quality control and physical testing at Lafarge-Holcim, and M.Sc. student at the Agricultural Research Council (ARC), I bring a proven track record in research, quality control, and student mentorship. My ability to conduct independent research, coupled with a passion for continuous learning and development, positions me to contribute effectively and uphold high standards in dynamic environments.")
 # Add a section for publications
 st.header("Research Outputs")
-publications = pd.read_csv("C:/Users/ThebeT/Desktop/Python Course/Training/Day 3/Publications.csv")
+publications = pd.read_csv("Publications.csv")
 st.dataframe(publications)
 
 st.header("Research Output Insights")
