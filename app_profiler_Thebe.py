@@ -1,105 +1,69 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-
+import plotly.express as px
 # Title of the app
 st.title("Researcher Profile")
 
 # Collect basic information
-name = "Dr. Tumelo Thebe"
-field = "Computational Microbiologist"
+
+field = "Microbiology"
 institution = "Agricultural Research Council"
 
 # Display basic profile information
-st.header("Researcher Overview")
-st.write(f"**Name:** {name}")
+st.header("Tumelo Thebe")
+
 st.write(f"**Field of Research:** {field}")
 st.write(f"**Institution:** {institution}")
 
 st.image(
-    "https://lh3.googleusercontent.com/a/ACg8ocIKttpkBhFvNco5l8IlWrDWsYc4KTD5kOHWQwm3U4foVZStqlv7=s360-c-no",
+    "https://i1.rgstatic.net/ii/profile.image/272816599728147-1442055954841_Q128/Tumelo-Thebe.jpg",
     caption="Tumelo Thebe"
 )
+st.header("Professional Summary")
 
+st.write("Highly motivated professional with a robust academic background, holding a B.Sc. in Biology and Chemistry, a B.Sc. Honours in Microbiology, and training in Project Management and Quality Assurance. My diverse expertise spans biology, analytical and organic chemistry, microbiology, biotechnology, and quality management. With hands-on experience as an intern research microbiologist at the National Research Foundation (NRF), roles in quality control and physical testing at Lafarge-Holcim, and M.Sc. student at the Agricultural Research Council (ARC), I bring a proven track record in research, quality control, and student mentorship. My ability to conduct independent research, coupled with a passion for continuous learning and development, positions me to contribute effectively and uphold high standards in dynamic environments.")
 # Add a section for publications
-st.header("Publications")
-uploaded_file = st.file_uploader("Publications.csv", type="csv")
+st.header("Research Outputs")
+publications = pd.read_csv("C:/Users/ThebeT/Desktop/Python Course/Training/Day 3/Publications.csv")
+st.dataframe(publications)
 
-if uploaded_file:
-    publications = pd.read_csv(uploaded_file)
-    st.dataframe(publications)
+st.header("Research Output Insights")
+if "Year" in publications.columns:
+    year_counts = publications["Year"].value_counts().sort_index()
+    # Create a Plotly figure
+fig = px.bar(year_counts, title="Figure 1: Number of publications per year")
 
-    # Add filtering for year or keyword
-    keyword = st.text_input("Filter by keyword", "")
-    if keyword:
-        filtered = publications[
-            publications.apply(lambda row: keyword.lower() in row.astype(str).str.lower().values, axis=1)
-        ]
-        st.write(f"Filtered Results for '{keyword}':")
-        st.dataframe(filtered)
-    else:
-        st.write("Showing all publications")
+# Display the plot in the Streamlit app
+st.plotly_chart(fig)
 
-# Add a section for visualizing publication trends
-st.header("Publication Trends")
-if uploaded_file:
-    if "Year" in publications.columns:
-        year_counts = publications["Year"].value_counts().sort_index()
-        st.bar_chart(year_counts)
-    else:
-        st.write("The CSV does not have a 'Year' column to visualize trends.")
-
-# Add STEM Data Section
-st.header("Explore STEM Data")
+st.header("More Information")
 
 # Generate dummy data
-physics_data = pd.DataFrame({
-    "Experiment": ["Alpha Decay", "Beta Decay", "Gamma Ray Analysis", "Quark Study", "Higgs Boson"],
-    "Energy (MeV)": [4.2, 1.5, 2.9, 3.4, 7.1],
-    "Date": pd.date_range(start="2024-01-01", periods=5),
+affiliations_data = pd.DataFrame({
+    "Institution": ["Agricultural Research Council", "North-West University", "Lefika Solutions", "Tharabololo Primary Cooporative"],
+    "Position": ["Junior Researcher", "Post-graduate Student", "Director", "Board Chairperson"],
+    "Commencement Date": ["2024-10-01", "2025-02-28", "2016-03-01", "2023-03-01"]
 })
 
-astronomy_data = pd.DataFrame({
-    "Celestial Object": ["Mars", "Venus", "Jupiter", "Saturn", "Moon"],
-    "Brightness (Magnitude)": [-2.0, -4.6, -1.8, 0.2, -12.7],
-    "Observation Date": pd.date_range(start="2024-01-01", periods=5),
-})
 
 weather_data = pd.DataFrame({
-    "City": ["Cape Town", "London", "New York", "Tokyo", "Sydney"],
-    "Temperature (°C)": [25, 10, -3, 15, 30],
-    "Humidity (%)": [65, 70, 55, 80, 50],
-    "Recorded Date": pd.date_range(start="2024-01-01", periods=5),
+    "City": ["Mafikeng", "Pretoria", "Buenos Aires", "Tijuana", "Paris"],
+    "Temperature (°C)": [25, 24, 23, 25, 15],
+    "Humidity (%)": [66, 74, 56, 78, 54]
 })
 
 # Tabbed view for STEM data
 st.subheader("STEM Data Viewer")
 data_option = st.selectbox(
-    "Choose a dataset to explore", 
-    ["Physics Experiments", "Astronomy Observations", "Weather Data"]
+    "Choose Information to explore", 
+    ["Click Here to Select", "Affiliations", "Weather Data"]
 )
 
-if data_option == "Physics Experiments":
-    st.write("### Physics Experiment Data")
-    st.dataframe(physics_data)
-    # Add widget to filter by Energy levels
-    energy_filter = st.slider("Filter by Energy (MeV)", 0.0, 10.0, (0.0, 10.0))
-    filtered_physics = physics_data[
-        physics_data["Energy (MeV)"].between(energy_filter[0], energy_filter[1])
-    ]
-    st.write(f"Filtered Results for Energy Range {energy_filter}:")
-    st.dataframe(filtered_physics)
-
-elif data_option == "Astronomy Observations":
-    st.write("### Astronomy Observation Data")
-    st.dataframe(astronomy_data)
-    # Add widget to filter by Brightness
-    brightness_filter = st.slider("Filter by Brightness (Magnitude)", -15.0, 5.0, (-15.0, 5.0))
-    filtered_astronomy = astronomy_data[
-        astronomy_data["Brightness (Magnitude)"].between(brightness_filter[0], brightness_filter[1])
-    ]
-    st.write(f"Filtered Results for Brightness Range {brightness_filter}:")
-    st.dataframe(filtered_astronomy)
+if data_option == "Affiliations":
+    st.write("### Affiliations Info")
+    st.dataframe(affiliations_data)
+   
 
 elif data_option == "Weather Data":
     st.write("### Weather Data")
@@ -117,4 +81,4 @@ elif data_option == "Weather Data":
 # Add a contact section
 st.header("Contact Information")
 email = "ThebeT@arc.agric.za"
-st.write(f"You can reach {name} at {email}.")
+st.write(f"You can reach me at {email}.")
