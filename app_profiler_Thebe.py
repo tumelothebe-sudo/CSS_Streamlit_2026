@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import plotly.express as px
+
 # Title of the app
 st.title("Researcher Profile")
 
@@ -31,11 +31,7 @@ st.dataframe(publications)
 st.header("Research Output Insights")
 if "Year" in publications.columns:
     year_counts = publications["Year"].value_counts().sort_index()
-    # Create a Plotly figure
-fig = px.bar(year_counts, title="Figure 1: Number of publications per year")
-
-# Display the plot in the Streamlit app
-st.plotly_chart(fig)
+st.bar_chart(year_counts)
 
 st.header("More Information")
 
